@@ -1,30 +1,28 @@
 [app]
-title = ELAZAR EDITOR PRO
+title = ELAZAR Editor Pro
 package.name = ezedit
 package.domain = org.elazar
+
 source.dir = .
-source.include_exts = py,png,jpg,ffmpeg
+source.include_exts = py,png,jpg,kv
 
 version = 3.5
 
-requirements = python3,kivy==2.3.0
+requirements = python3,kivy
 
 orientation = portrait
+fullscreen = 0
 
-icon.filename = icon.png
-presplash.filename = presplash.png
+android.arch = arm64-v8a
 
-android.permissions = INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,MANAGE_EXTERNAL_STORAGE,READ_MEDIA_VIDEO,READ_MEDIA_AUDIO,READ_MEDIA_IMAGES
+android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
-android.api = 33
-android.minapi = 24
-android.ndk = 25b
-android.archs = arm64-v8a
+android.presplash.filename = presplash.png
+android.icon = icon.png
 
-android.accept_sdk_license = True
-android.enable_androidx = True
-
-android.release_artifact = apk
+# FFmpeg
+android.add_assets = assets/ffmpeg:ffmpeg
 
 [buildozer]
 log_level = 2
+warn_on_root = 1
