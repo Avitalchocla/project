@@ -24,5 +24,6 @@ android.icon = icon.png
 android.add_assets = assets/ffmpeg:ffmpeg
 
 [buildozer]
+
 log_level = 2
 warn_on_root = 1
