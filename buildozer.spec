@@ -14,13 +14,11 @@ requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
 
-# ===== ANDROID =====
-
+# ANDROID
 android.api = 30
 android.minapi = 21
 
 android.ndk = 25b
-
 android.archs = arm64-v8a
 
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
@@ -29,8 +27,6 @@ android.presplash.filename = presplash.png
 android.icon = icon.png
 
 android.add_assets = assets/ffmpeg:ffmpeg
-
-# ===== BUILD =====
 
 [buildozer]
 log_level = 2
