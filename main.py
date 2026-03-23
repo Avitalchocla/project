@@ -12,7 +12,10 @@ class MainApp(App):
 
         layout = BoxLayout(orientation='vertical', padding=15, spacing=10)
 
-        self.label = Label(text="🎧 בחר קובץ אודיו", size_hint=(1, 0.1))
+        self.label = Label(
+            text="🎧 בחר קובץ אודיו",
+            size_hint=(1, 0.1)
+        )
         layout.add_widget(self.label)
 
         self.filechooser = FileChooserListView(
@@ -29,7 +32,7 @@ class MainApp(App):
         btn_stop.bind(on_press=self.stop_audio)
         layout.add_widget(btn_stop)
 
-        btn_folder = Button(text="📂 פתח Download", size_hint=(1, 0.1))
+        btn_folder = Button(text="📂 פתח תיקיית Download", size_hint=(1, 0.1))
         btn_folder.bind(on_press=self.open_downloads)
         layout.add_widget(btn_folder)
 
