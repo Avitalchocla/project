@@ -9,42 +9,51 @@ jobs:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 📥 Checkout
-      uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-    - name: 🐍 Python 3.10
+    - name: 🐍 Python
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: ⚙️ Install dependencies
+    - name: ⚙️ Install deps
       run: |
         sudo apt update
         sudo apt install -y zip unzip openjdk-17-jdk python3-pip git
         pip install --upgrade pip
         pip install buildozer cython
 
-    - name: 📁 Prepare folders
+    # 🔥 זה החלק הכי חשוב
+    - name: 🧹 Clean previous builds
+      run: |
+        rm -rf .buildozer
+        rm -rf bin
+
+    - name: 📁 Prepare
       run: mkdir -p assets
 
     - name: 📥 Download FFmpeg
       run: |
         wget https://files.catbox.moe/g2umsq -O assets/ffmpeg
         chmod +x assets/ffmpeg
-        ls -la assets/
 
-    # 🔥 תיקון AIDL
-    - name: 🔧 Fix Android SDK
+    # 🔥 תיקון מלא ל-SDK + NDK
+    - name: 🔧 Setup Android SDK
       run: |
         yes | buildozer android update
-        yes | $HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager \
-        "platform-tools" \
-        "platforms;android-30" \
-        "build-tools;30.0.3"
+
+        SDK=$HOME/.buildozer/android/platform/android-sdk
+        TOOLS=$SDK/cmdline-tools/latest/bin
+
+        yes | $TOOLS/sdkmanager \
+          "platform-tools" \
+          "platforms;android-30" \
+          "build-tools;30.0.3" \
+          "ndk;25.2.9519653"
 
     - name: 🔨 Build APK
       run: |
-        buildozer android debug
+        buildozer -v android debug
 
     - name: 📤 Upload APK
       uses: actions/upload-artifact@v4
