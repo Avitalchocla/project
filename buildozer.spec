@@ -18,17 +18,16 @@ fullscreen = 0
 
 android.api = 30
 android.minapi = 21
-android.sdk = 30
-android.ndk = 23b
 
-android.arch = arm64-v8a
+android.ndk = 25b
+
+android.archs = arm64-v8a
 
 android.permissions = READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE
 
 android.presplash.filename = presplash.png
 android.icon = icon.png
 
-# FFmpeg
 android.add_assets = assets/ffmpeg:ffmpeg
 
 # ===== BUILD =====
