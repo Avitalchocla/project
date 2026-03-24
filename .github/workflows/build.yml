@@ -17,6 +17,10 @@ jobs:
       with:
         python-version: '3.10'
 
+    # 👇 מתקין Android SDK כמו שצריך
+    - name: 🤖 Setup Android SDK
+      uses: android-actions/setup-android@v3
+
     - name: ⚙️ Install deps
       run: |
         sudo apt update
@@ -32,10 +36,10 @@ jobs:
         wget https://files.catbox.moe/g2umsq -O assets/ffmpeg
         chmod +x assets/ffmpeg
 
-    # 👇 זה התיקון החשוב
-    - name: 🔧 Fix Android SDK + NDK
+    # 👇 עכשיו sdkmanager יעבוד
+    - name: 🔧 Install Android packages
       run: |
-        yes | sdkmanager --licenses || true
+        yes | sdkmanager --licenses
         sdkmanager "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
 
     - name: 🔨 Build APK
