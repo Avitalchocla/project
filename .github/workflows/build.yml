@@ -1,53 +1,55 @@
 name: Build APK
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-22.04
 
     steps:
-    - name: 📥 Checkout
-      uses: actions/checkout@v4
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
 
-    - name: 🐍 Python 3.10
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: 🐍 Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
 
-    # 👇 מתקין Android SDK כמו שצריך
-    - name: 🤖 Setup Android SDK
-      uses: android-actions/setup-android@v3
+      - name: ☕ Setup Java 17 (FIX)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
-    - name: ⚙️ Install deps
-      run: |
-        sudo apt update
-        sudo apt install -y zip unzip openjdk-17-jdk python3-pip git
-        pip install --upgrade pip
-        pip install buildozer cython
+      - name: 🔧 Force Java 17 (CRITICAL FIX)
+        run: |
+          echo "JAVA_HOME=$JAVA_HOME"
+          java -version
 
-    - name: 📁 Prepare folders
-      run: mkdir -p assets
+      - name: 🤖 Setup Android SDK
+        uses: android-actions/setup-android@v3
 
-    - name: 📥 Download FFmpeg
-      run: |
-        wget https://files.catbox.moe/g2umsq -O assets/ffmpeg
-        chmod +x assets/ffmpeg
+      - name: ⚙️ Install dependencies
+        run: |
+          sudo apt update
+          sudo apt install -y zip unzip git python3-pip autoconf automake libtool pkg-config zlib1g-dev libncurses5 libncursesw5 cmake libffi-dev libssl-dev build-essential wget
+          pip install --upgrade pip
+          pip install buildozer cython==0.29.33
 
-    # 👇 עכשיו sdkmanager יעבוד
-    - name: 🔧 Install Android packages
-      run: |
-        yes | sdkmanager --licenses
-        sdkmanager "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
+      - name: 📥 Download FFmpeg
+        run: |
+          mkdir -p assets
+          wget https://files.catbox.moe/g2umsq -O assets/ffmpeg
+          chmod +x assets/ffmpeg
 
-    - name: 🔨 Build APK
-      run: |
-        buildozer android debug
+      - name: 🛠️ Build APK
+        run: |
+          yes | sdkmanager --licenses || true
+          buildozer -v android debug
 
-    - name: 📤 Upload APK
-      uses: actions/upload-artifact@v4
-      with:
-        name: ezedit-apk
-        path: bin/*.apk
+      - name: 📤 Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: APK
+          path: bin/*.apk
